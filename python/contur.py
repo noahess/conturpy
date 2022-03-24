@@ -1,11 +1,11 @@
 def reduce_g(num) -> str:
-    if num == 0:
-        return f"0.0       "
-
     g_str = f"{num:<10.10G}"
 
     if "." not in g_str:
-        g_str = f"{num:<10.10E}"
+        if len(g_str.strip()) > 8:
+            g_str = f"{num:<10.10E}"
+        else:
+            g_str = (g_str.strip() + '.            ')[:10]
 
     if 'E' in g_str:
         txt_split = g_str.split('E')
@@ -174,56 +174,56 @@ class ConturSettings(object):
 if __name__ == "__main__":
     c = ConturSettings()
 
-    c["ITLE"] = "MACH 6"
+    c["ITLE"] = "M A C H 4"
     c["JD"] = 0
 
     c["SFOA"] = 0
     c["XBL"] = 1000
 
-    c["ETAD"] = 60
-    c["RC"] = 5.5
+    c["ETAD"] = 8.67
+    c["RC"] = 6.0
     c["FMACH"] = 0
-    c["BMACH"] = 0
-    c["CMC"] = 6.0
-    c["SF"] = 1 * 0.325
-    c["PP"] = 0
+    c["BMACH"] = 3
+    c["CMC"] = 4
+    c["SF"] = -12.25
+    c["PP"] = 60.0
     c["XC"] = 0
 
-    c["MT"] = 49
-    c["NT"] = 41
+    c["MT"] = 41
+    c["NT"] = 21
     c["IX"] = 0
     c["IN"] = 10
-    c["IQ"] = 1
+    c["IQ"] = 0
     c["MD"] = 41
     c["ND"] = 49
     c["NF"] = -61
     c["MP"] = 0
     c["MQ"] = 0
     c["JB"] = 1
-    c["JX"] = 1
+    c["JX"] = 0
     c["JC"] = 10
     c["IT"] = 0
-    c["LR"] = -41
+    c["LR"] = -21
     c["NX"] = 13
 
     c["NOUP"] = 50
     c["NPCT"] = 85
     c["NODO"] = 50
 
-    c["PPQ"] = 110
-    c["TO"] = 960
-    c["TWT"] = 530
-    c["TWAT"] = 530
-    c["QFUN"] = 0
+    c["PPQ"] = 200
+    c["TO"] = 1638
+    c["TWT"] = 900
+    c["TWAT"] = 540
+    c["QFUN"] = .38
     c["ALPH"] = 0
     c["IHT"] = 0
     c["IR"] = 0
     c["ID"] = 1
     c["LV"] = 5
 
-    c["ETAD"] = 60
-    c["QM"] = 1
-    c["XJ"] = 1
+    # c["ETAD"] = 60
+    # c["QM"] = 1
+    # c["XJ"] = 1
 
     c["XST"] = 1000
     c["XLOW"] = 46
