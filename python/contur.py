@@ -172,9 +172,15 @@ class ConturSettings(object):
 
 
 if __name__ == "__main__":
+    from os import rename, getcwd
+    from subprocess import run
+    from time import sleep
+
+    d_mach = 4.8
+
     c = ConturSettings()
 
-    c["ITLE"] = "M A C H 4"
+    c["ITLE"] = f"Mach {d_mach}"
     c["JD"] = 0
 
     c["SFOA"] = 0
@@ -184,8 +190,8 @@ if __name__ == "__main__":
     c["RC"] = 6.0
     c["FMACH"] = 0
     c["BMACH"] = 3
-    c["CMC"] = 4
-    c["SF"] = -12.25
+    c["CMC"] = d_mach
+    c["SF"] = -2.5
     c["PP"] = 60.0
     c["XC"] = 0
 
@@ -234,6 +240,17 @@ if __name__ == "__main__":
     c["XINC2"] = 0
     c["CN"] = 0
 
-    print(c.get_deck())
     c.print_to_input()
+
+        # # print(c.get_deck())
+        # c.print_to_input()
+        #
+        # sleep(0.25)
+        # print('Calling contur')
+        # res = run([r'.\contur.exe'], shell=True, cwd=getcwd())
+        # sleep(0.25)
+        # print('Renaming output')
+        # rename('output.txt', f'output{d_mach*10}.txt')
+
+
 
