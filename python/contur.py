@@ -172,85 +172,80 @@ class ConturSettings(object):
 
 
 if __name__ == "__main__":
-    from os import rename, getcwd
+    from os import replace, getcwd
     from subprocess import run
     from time import sleep
 
-    d_mach = 4.8
+    for d_mach in [mp / 10 for mp in range(30, 66)]:
 
-    c = ConturSettings()
+        c = ConturSettings()
 
-    c["ITLE"] = f"Mach {d_mach}"
-    c["JD"] = 0
+        c["ITLE"] = f"Mach {d_mach}"
+        c["JD"] = 0
 
-    c["SFOA"] = 0
-    c["XBL"] = 1000
+        c["SFOA"] = 0
+        c["XBL"] = 1000
 
-    c["ETAD"] = 8.67
-    c["RC"] = 6.0
-    c["FMACH"] = 0
-    c["BMACH"] = 3
-    c["CMC"] = d_mach
-    c["SF"] = -2.5
-    c["PP"] = 60.0
-    c["XC"] = 0
+        c["ETAD"] = 8.5
+        c["RC"] = 6.0
+        c["FMACH"] = 0
+        c["BMACH"] = 0
+        c["CMC"] = d_mach
+        c["SF"] = 1.5
+        c["PP"] = 60.0
+        c["XC"] = 0
 
-    c["MT"] = 41
-    c["NT"] = 21
-    c["IX"] = 0
-    c["IN"] = 10
-    c["IQ"] = 0
-    c["MD"] = 41
-    c["ND"] = 49
-    c["NF"] = -61
-    c["MP"] = 0
-    c["MQ"] = 0
-    c["JB"] = 1
-    c["JX"] = 0
-    c["JC"] = 10
-    c["IT"] = 0
-    c["LR"] = -21
-    c["NX"] = 13
+        c["MT"] = 41
+        c["NT"] = 21
+        c["IX"] = 0
+        c["IN"] = 10
+        c["IQ"] = 0
+        c["MD"] = 41
+        c["ND"] = 49
+        c["NF"] = -61
+        c["MP"] = 0
+        c["MQ"] = 0
+        c["JB"] = 1
+        c["JX"] = 0
+        c["JC"] = 10
+        c["IT"] = 0
+        c["LR"] = -21
+        c["NX"] = 13
 
-    c["NOUP"] = 50
-    c["NPCT"] = 85
-    c["NODO"] = 50
+        c["NOUP"] = 50
+        c["NPCT"] = 85
+        c["NODO"] = 50
 
-    c["PPQ"] = 200
-    c["TO"] = 1638
-    c["TWT"] = 900
-    c["TWAT"] = 540
-    c["QFUN"] = .38
-    c["ALPH"] = 0
-    c["IHT"] = 0
-    c["IR"] = 0
-    c["ID"] = 1
-    c["LV"] = 5
+        c["PPQ"] = 200
+        c["TO"] = 1638
+        c["TWT"] = 900
+        c["TWAT"] = 540
+        c["QFUN"] = .38
+        c["ALPH"] = 0
+        c["IHT"] = 0
+        c["IR"] = 0
+        c["ID"] = 1
+        c["LV"] = 5
 
-    # c["ETAD"] = 60
-    # c["QM"] = 1
-    # c["XJ"] = 1
+        # c["ETAD"] = 60
+        # c["QM"] = 1
+        # c["XJ"] = 1
 
-    c["XST"] = 1000
-    c["XLOW"] = 46
-    c["XEND"] = 172
-    c["XINC"] = 2
-    c["BJ"] = 0
-    c["XMID"] = 0
-    c["XINC2"] = 0
-    c["CN"] = 0
+        c["XST"] = 1000
+        c["XLOW"] = 46
+        c["XEND"] = 172
+        c["XINC"] = 2
+        c["BJ"] = 0
+        c["XMID"] = 0
+        c["XINC2"] = 0
+        c["CN"] = 0
 
-    c.print_to_input()
+        c.print_to_input()
 
-        # # print(c.get_deck())
-        # c.print_to_input()
-        #
-        # sleep(0.25)
-        # print('Calling contur')
-        # res = run([r'.\contur.exe'], shell=True, cwd=getcwd())
-        # sleep(0.25)
-        # print('Renaming output')
-        # rename('output.txt', f'output{d_mach*10}.txt')
+        c.print_to_input()
+
+        run([r'.\contur.exe'], shell=True, cwd=getcwd())
+        replace('output.txt', f'output8p5/output{d_mach*10:.0f}.txt')
 
 
 
