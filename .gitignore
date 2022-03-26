@@ -361,3 +361,13 @@ MigrationBackup/
 
 # Fody - auto-generated XML schema
 FodyWeavers.xsd
+/src/.ipynb_checkpoints/
+/python/.ipynb_checkpoints/
+/python/search40/
+/python/search45/
+/python/search50/
+/python/search53/
+/python/search57/
+/python/search60/
+/python/search62/
+/python/SolidWorks/
