@@ -1,4 +1,7 @@
 def reduce_g(num) -> str:
+    if num == 0:
+        return "0         "
+
     g_str = f"{num:<10.10G}"
 
     if "." not in g_str:
@@ -58,6 +61,11 @@ class ConturCard(object):
             raise AttributeError(f"Card label {label} not found")
 
 
+class ConturCard1(ConturCard):
+    def print(self) -> str:
+        return f" {self.card_values[0]:^10.10s}  {self.card_values[1]:<2d}"
+
+
 class ConturSettings(object):
     def __init__(self, smooth_inviscid_contour=True, include_bl=True, bl_use_characteristics=True, use_spline=True,
                  smooth_before_splind=False):
@@ -68,7 +76,7 @@ class ConturSettings(object):
         self._use_spline = use_spline
         self._smooth_before_splind = smooth_before_splind
 
-        self._card1 = ConturCard(
+        self._card1 = ConturCard1(
             ["ITLE", "JD"],
             ["Title", 0],
             ["10.10s", "2d"],
@@ -172,81 +180,106 @@ class ConturSettings(object):
 
 
 if __name__ == "__main__":
-    from os import replace, getcwd
-    from subprocess import run
-    from time import sleep
+    from os import replace, getcwd, mkdir
+    from os.path import exists
+    import subprocess
+    import time
 
-    for etad in [5, 6, 7, 8, 9, 10, 15, 20, 25, 30, 40, 50, 60]:
-        for d_mach in [mp / 10 for mp in range(30, 66)]:
+    max_time = .5
+    for dmach in [4, 4.5, 5, 5.3, 5.7, 6.0, 6.2]:
+        outdir = f'search{dmach * 10:.0f}'
+        if not exists(outdir):
+            mkdir(outdir)
 
-            c = ConturSettings()
+        for etad in [5, 5.5, 6, 6.5, 7, 7.5, 8, 8.5, 9, 9.5, 10, 15, 20, 25, 30, 40, 50, 60]:
+            for fmach in [0, 1, 2, 3, 4, 5, 6]:
+                for bmach in [0, 1, 2, 3, 4, 5, 6]:
+                    new_name = f'{outdir}/DM{dmach * 10:.0f}_FM_{fmach * 10:.0f}_BM_{bmach * 10:.0f}_ETAD{etad:.0f}.txt'
 
-            c["ITLE"] = f"Mach {d_mach}"
-            c["JD"] = 0
+                    # if exists(new_name):
+                    #     continue
 
-            c["SFOA"] = 0
-            c["XBL"] = 1000
+                    if fmach > dmach or bmach > dmach:
+                        continue
 
-            c["ETAD"] = etad
-            c["RC"] = 6.0
-            c["FMACH"] = 0
-            c["BMACH"] = 0
-            c["CMC"] = d_mach
-            c["SF"] = 0.25
-            c["PP"] = 60.0
-            c["XC"] = 0
+                    print(f"{dmach} {etad} {fmach} {bmach}")
 
-            c["MT"] = 41
-            c["NT"] = 21
-            c["IX"] = 0
-            c["IN"] = 10
-            c["IQ"] = 0
-            c["MD"] = 41
-            c["ND"] = 49
-            c["NF"] = -61
-            c["MP"] = 0
-            c["MQ"] = 0
-            c["JB"] = 1
-            c["JX"] = 0
-            c["JC"] = 10
-            c["IT"] = 0
-            c["LR"] = -21
-            c["NX"] = 13
+                    c = ConturSettings()
 
-            c["NOUP"] = 50
-            c["NPCT"] = 85
-            c["NODO"] = 50
+                    c["ITLE"] = f"Mach {dmach}"
+                    c["JD"] = 0
 
-            c["PPQ"] = 120
-            c["TO"] = 1000
-            c["TWT"] = 540
-            c["TWAT"] = 540
-            c["QFUN"] = .38
-            c["ALPH"] = 0
-            c["IHT"] = 0
-            c["IR"] = 0
-            c["ID"] = 1
-            c["LV"] = 5
+                    c["SFOA"] = 0
+                    c["XBL"] = 1000
 
-            # c["ETAD"] = 60
-            # c["QM"] = 1
-            # c["XJ"] = 1
+                    c["ETAD"] = etad
+                    c["RC"] = 6.0
+                    c["FMACH"] = fmach
+                    c["BMACH"] = bmach
+                    c["CMC"] = dmach
+                    c["SF"] = 0.25
+                    c["PP"] = 60.0
+                    c["XC"] = 0
 
-            c["XST"] = 1000
-            c["XLOW"] = 46
-            c["XEND"] = 172
-            c["XINC"] = 2
-            c["BJ"] = 0
-            c["XMID"] = 0
-            c["XINC2"] = 0
-            c["CN"] = 0
+                    c["MT"] = 41
+                    c["NT"] = 21
+                    c["IX"] = 0
+                    c["IN"] = 10
+                    c["IQ"] = 0
+                    c["MD"] = 41
+                    c["ND"] = 49
+                    c["NF"] = -61
+                    c["MP"] = 0
+                    c["MQ"] = 0
+                    c["JB"] = 1
+                    c["JX"] = 0
+                    c["JC"] = 10
+                    c["IT"] = 0
+                    c["LR"] = -21
+                    c["NX"] = 18
 
-            c.print_to_input()
+                    c["NOUP"] = 50
+                    c["NPCT"] = 85
+                    c["NODO"] = 50
 
-            c.print_to_input()
+                    c["PPQ"] = 120
+                    c["TO"] = 1000
+                    c["TWT"] = 540
+                    c["TWAT"] = 540
+                    c["QFUN"] = .38
+                    c["ALPH"] = 0
+                    c["IHT"] = 0
+                    c["IR"] = 0
+                    c["ID"] = 1
+                    c["LV"] = 5
 
-            run([r'.\contur.exe'], shell=True, cwd=getcwd())
-            replace('output.txt', f'output/output{d_mach*10:.0f}-{etad:.0f}.txt')
+                    # c["ETAD"] = 60
+                    # c["QM"] = 1
+                    # c["XJ"] = 1
 
+                    c["XST"] = 1000
+                    c["XLOW"] = 46
+                    c["XEND"] = 172
+                    c["XINC"] = 2
+                    c["BJ"] = 0
+                    c["XMID"] = 0
+                    c["XINC2"] = 0
+                    c["CN"] = 0
 
+                    c.print_to_input()
+                    time.sleep(0.05)
+                    p = subprocess.Popen([r'.\contur.exe'], cwd=getcwd(), stdout=subprocess.DEVNULL,
+                                         stderr=subprocess.DEVNULL)
 
+                    t = time.time()
+                    while True:
+                        result = p.poll()
+                        if result is not None:
+                            replace('output.txt', new_name)
+                            break
+                        elif time.time() - t > max_time:
+                            p.kill()
+                            print(' Killed')
+                            time.sleep(.5)
+                            break
+                        time.sleep(.05)
