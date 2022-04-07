@@ -186,14 +186,14 @@ if __name__ == "__main__":
     import time
 
     max_time = .5
-    for dmach in [4, 4.5, 5, 5.3, 5.7, 6.0, 6.2]:
-        outdir = f'search{dmach * 10:.0f}'
+    for dmach in [4, 4.5, 5, 5.3, 5.5, 5.7, 6.0, 6.2, 6.5]:
+        outdir = f'search_stream{dmach * 10:.0f}'
         if not exists(outdir):
             mkdir(outdir)
 
-        for etad in [5, 5.5, 6, 6.5, 7, 7.5, 8, 8.5, 9, 9.5, 10, 15, 20, 25, 30, 40, 50, 60]:
-            for fmach in [0, 1, 2, 3, 4, 5, 6]:
-                for bmach in [0, 1, 2, 3, 4, 5, 6]:
+        for etad in [60]:
+            for fmach in [0]:
+                for bmach in [0]:
                     new_name = f'{outdir}/DM{dmach * 10:.0f}_FM_{fmach * 10:.0f}_BM_{bmach * 10:.0f}_ETAD{etad:.0f}.txt'
 
                     # if exists(new_name):
@@ -217,32 +217,32 @@ if __name__ == "__main__":
                     c["FMACH"] = fmach
                     c["BMACH"] = bmach
                     c["CMC"] = dmach
-                    c["SF"] = 0.25
+                    c["SF"] = 0.26 / 2
                     c["PP"] = 60.0
                     c["XC"] = 0
 
-                    c["MT"] = 41
-                    c["NT"] = 21
+                    c["MT"] = 61
+                    c["NT"] = 41
                     c["IX"] = 0
                     c["IN"] = 10
                     c["IQ"] = 0
-                    c["MD"] = 41
-                    c["ND"] = 49
+                    c["MD"] = 61
+                    c["ND"] = 69
                     c["NF"] = -61
                     c["MP"] = 0
                     c["MQ"] = 0
                     c["JB"] = 1
                     c["JX"] = 0
-                    c["JC"] = 10
+                    c["JC"] = 1
                     c["IT"] = 0
-                    c["LR"] = -21
+                    c["LR"] = -45
                     c["NX"] = 18
 
                     c["NOUP"] = 50
                     c["NPCT"] = 85
                     c["NODO"] = 50
 
-                    c["PPQ"] = 120
+                    c["PPQ"] = 70
                     c["TO"] = 1000
                     c["TWT"] = 540
                     c["TWAT"] = 540
@@ -258,9 +258,9 @@ if __name__ == "__main__":
                     # c["XJ"] = 1
 
                     c["XST"] = 1000
-                    c["XLOW"] = 46
-                    c["XEND"] = 172
-                    c["XINC"] = 2
+                    c["XLOW"] = 50
+                    c["XEND"] = 80
+                    c["XINC"] = .1
                     c["BJ"] = 0
                     c["XMID"] = 0
                     c["XINC2"] = 0

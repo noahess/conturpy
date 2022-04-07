@@ -53,7 +53,7 @@ def get_all_shapes(in_files):
 
 
 def run(dmach):
-    fs = glob.glob(f'search{dmach * 10:.0f}/*.txt')
+    fs = glob.glob(f'search_stream{dmach * 10:.0f}/*.txt')
 
     good_files = []
     for f in fs:
@@ -96,11 +96,11 @@ def run(dmach):
 
         mn = int(files[0].split('DM')[1].split('_')[0])
 
-        output_file = f'complete/M{mn}_{u_idx}.txt'
+        output_file = f'complete_stream/M{mn}_{u_idx}.txt'
         # noinspection PyTypeChecker
         np.savetxt(output_file, shape, delimiter=',', header=f'Source File: {original_f_name}\n{length}')
 
 
 if __name__ == '__main__':
-    for dmach in [4, 4.5, 5, 5.3, 5.7, 6.0, 6.2]:
+    for dmach in [4, 4.5, 5, 5.3, 5.5, 5.7, 6.0, 6.2, 6.5]:
         run(dmach)
