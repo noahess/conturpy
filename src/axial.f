@@ -118,6 +118,8 @@
       gmach=fmv(gpsi)
       rg=((g6+g5*gmach**2)**ga/gmach)**qt
       mp=one+thr*(ra-rg)
+      frc=((g6+g5*cmach**2)**ga/cmach)**qt
+      tye=frc*se
       goto 14
 1     se=qm*seo
       goto 14
