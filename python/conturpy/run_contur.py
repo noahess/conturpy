@@ -26,54 +26,54 @@ class ConturApplication(object):
         assert self._exists
         return subprocess.check_output(self.path, timeout=self.timeout)
 
+    def _run_single_file(self, file, output_dir):
+        shutil.copyfile(file, os.path.join(self.location, 'input.txt'))
+        self.run()
+        flag, newfile = self._move_output(like_source_fn=file, dest_folder=output_dir)
+        os.remove(file)
+
+        if flag == 1:
+            return ConturResult(newfile)
+        else:
+            return None
+
     def batch_input_files(self, file_list, output_dir=os.getcwd()):
         results = []
         for file in file_list:
-            shutil.copyfile(file, os.path.join(self.location, 'input.txt'))
-            self.run()
-            flag, newfile = self._move_output(like_source_fn=file, dest_folder=output_dir)
-            
-            if flag == 1:
-                results.append(ConturResult(newfile))
-            else:
-                results.append[None]
-            os.remove(file)
+            results.append(self._run_single_file(file, output_dir))
+        self.clean_wd()
         return results
-
 
     def batch_input_folder(self, folder, output_dir=os.getcwd()):
         results = []
         for file in glob.glob(os.path.join(folder, '*.txt')):
-            shutil.copyfile(file, os.path.join(self.location, 'input.txt'))
-            self.run()
-            flag, newfile = self._move_output(like_source_fn=file, dest_folder=output_dir)
-
-            if flag == 1:
-                results.append(ConturResult(newfile))
-            else:
-                results.append[None]
-            os.remove(file)
+            results.append(self._run_single_file(file, output_dir))
+        self.clean_wd()
         return results
 
-    def _move_output(self, dest_fn=None, like_source_fn=None, dest_folder=None, src=os.path.join(os.getcwd(), 'output.txt')):
+    @staticmethod
+    def _move_output(dest_fn=None, like_source_fn=None, dest_folder=None,
+                     src=os.path.join(os.getcwd(), 'output.txt')):
         if not os.path.exists(src):
             return -1, None
         if like_source_fn is not None:
-            dest_fn = os.path.split(like_source_fn)[-1].replace('.txt', '_result.txt') 
+            dest_fn = os.path.split(like_source_fn)[-1].replace('.txt', '_result.txt')
         else:
             dest_fn = 'output.txt' if dest_fn is None else dest_fn
-        
+
         dest_folder = os.getcwd() if dest_folder is None else dest_folder
         newfile = os.path.join(dest_folder, dest_fn)
         shutil.copyfile(src, newfile)
-        
+
         return 1, newfile
 
     @property
     def path(self):
         return os.path.join(self.location, self.executable)
 
-    def clean_wd(self, wd=os.getcwd()):
+    def clean_wd(self, wd=None):
+        if wd is None:
+            wd = self.location
         input_file = os.path.join(wd, 'input.txt')
         output_file = os.path.join(wd, 'output.txt')
 
@@ -91,7 +91,7 @@ class ConturApplication(object):
             else:
                 return False
         else:
-            return True 
+            return True
 
     def __repr__(self):
         if self._exists():
