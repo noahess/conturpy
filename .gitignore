@@ -3,11 +3,14 @@
 ##
 ## Get latest from https://github.com/github/gitignore/blob/master/VisualStudio.gitignore
 
-# No iPython
+# Manual
 /.idea/
 /.ipynb_checkpoints/
 /python/.ipynb_checkpoints/
 /python/outputs/*
+/python/inputcards/
+/python/outputs/
+.DS_STORE
 
 
 # User-specific files
