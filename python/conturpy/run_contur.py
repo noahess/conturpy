@@ -3,6 +3,7 @@ import subprocess
 import os
 import shutil
 import glob
+from pathlib import Path
 from .read_output import ConturResult
 
 
@@ -12,11 +13,12 @@ class ConturApplication(object):
         self.timeout = timeout
 
         if executable is None:
+            bin_path = Path(__file__).parent.joinpath('bin/')
             plat = platform.system()
             if plat == 'Windows':
-                executable = 'contur.exe'
-            elif plat == 'Darwin':
-                executable = 'contur'
+                executable = bin_path.joinpath('contur.exe')
+            elif plat == 'Darwin' and platform.machine() == 'arm64':
+                executable = bin_path.joinpath('contur_macarm64')
             else:
                 raise Exception(f"Platform {plat} is not supported")
         self.executable = executable
@@ -24,7 +26,7 @@ class ConturApplication(object):
 
     def run(self):
         assert self._exists
-        return subprocess.check_output(self.path, timeout=self.timeout)
+        return subprocess.check_output(self.executable, timeout=self.timeout, cwd=self.location)
 
     def _run_single_file(self, file, output_dir):
         shutil.copyfile(file, os.path.join(self.location, 'input.txt'))
@@ -67,10 +69,6 @@ class ConturApplication(object):
 
         return 1, newfile
 
-    @property
-    def path(self):
-        return os.path.join(self.location, self.executable)
-
     def clean_wd(self, wd=None):
         if wd is None:
             wd = self.location
@@ -84,7 +82,7 @@ class ConturApplication(object):
 
     def _exists(self):
         if not self._expected_to_exist:
-            exists = os.path.exists(self.path)
+            exists = os.path.exists(self.executable)
             if exists:
                 self._expected_to_exist = True
                 return True
@@ -95,6 +93,6 @@ class ConturApplication(object):
 
     def __repr__(self):
         if self._exists():
-            return f"CONTUR Executable at {self.path}"
+            return f"CONTUR Executable at {self.executable}"
         else:
-            return f"CONTUR Executable NOT FOUND (expected at {self.path})"
+            return f"CONTUR Executable NOT FOUND (expected at {self.executable})"
