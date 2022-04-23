@@ -211,7 +211,6 @@ Some example plots for a Mach 5.0 nozzle are below:
 ### Card 3
 | Key | Default | Author's Notes |
 | -- | -- | -- |
-| 	extbf{Name}  |  	extbf{Default}  |  	extbf{Notes}  |
 | ETAD  |  60  |  Inflection angle for radial flow. If ETAD=60, the entire centerline velocity distribution is specified; IQ=1 and IX=0 on card 4.  |
 | RC  |  6  |  The radius of curvature of the throat: multiples of throat radius. Suggest in the neighborhood of 5.5-6.0  |
 | FMACH  |  0  |  If ETAD is not 60, Mach number at point F (see Sivells' paper)  |
