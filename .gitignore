@@ -381,3 +381,4 @@ FodyWeavers.xsd
 /outputs/
 /inputcards/
 /.ipynb_checkpoints/
+.DS_Store
