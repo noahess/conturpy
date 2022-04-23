@@ -1,1 +1,0 @@
-gfortran -O2 -std=legacy -J build/macarm64/ -o build/macarm64/contur src/*.f
