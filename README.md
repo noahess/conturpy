@@ -1,4 +1,6 @@
 # ConturPy: Python Hypersonic Nozzle Design
+
+
 ## Introduction
 ConturPy is a python library that provides an interface to J. C. Sivells' CONTUR program for supersonic and hypersonic 
 nozzle design. 
@@ -16,8 +18,8 @@ that Sivells' code does not produce streamlines when ETAD is not 60. Schneider f
 subroutine by duplicating lines 111 and 112 above line 43. The same change has been made to the axial.f source file.
 
 ## Dependencies
-- numpy
-- matplotlib
+- numpy >~ 1.22
+- matplotlib >~ 3.5
 
 ## Usage
 ConturPy is designed to do 4 things:
@@ -26,6 +28,7 @@ ConturPy is designed to do 4 things:
 3. Interpret the CONTUR results
 4. Create images and tables for all CONTUR outputs
 
+---
 ### Creating input cards
 ConturPy provides the `ConturSettings` class that produces input cards in the format that CONTUR accepts. To start, 
 create an instance of the `ConturSettings` class:
@@ -71,6 +74,7 @@ cs["XINC"] = .1      # Increment to interpolate by [in]
 cs.print_to_input(file_name=f'm{dmach:.1f}.txt', output_directory='inputcards')
 ```
 
+---
 ### Running CONTUR
 Once your input cards have been created, `ConturApplication` wraps CONTUR and can process the input cards, producing 
 CONTUR output text files and instances of the `ConturResult` class. ConturApplication provides three methods for running
@@ -104,6 +108,7 @@ print(res)
 ```
 
 
+---
 ### Reading CONTUR's Output
 ConturPy reads CONTUR's output by creating an instance of the `ConturResult` class by calling
 `ConturResult(filename, refine_amt=21)` where `filename` is the filename of the file produced by CONTUR, `refine_amt` is
@@ -157,7 +162,7 @@ The `ConturTable` object also provides `.to_numpy()` and `.to_pandas()` methods 
 Pandas must be installed to call `.to_pandas()`
 
 
-
+---
 ### Report Generation
 ConturPy can generate `.csv` files for all `ConturTable` instances, as well as create various plots. Each individual 
 plot and table can be saved, however `ConturResult.save_all(directory)` is fast enough and the results are small enough 
